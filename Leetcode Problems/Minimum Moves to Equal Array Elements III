@@ -1,1 +1,7 @@
 
+var minMoves = function(nums) {
+    let max = Math.max(...nums);
+    let sum = nums.reduce((a, b) => a + b, 0);
+
+    return nums.length * max - sum;
+};
