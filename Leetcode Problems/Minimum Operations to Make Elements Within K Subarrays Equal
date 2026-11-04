@@ -1,1 +1,40 @@
 
+var minOperations = function(A, x, k) {
+    let n = A.length, u = [...new Set(A)].sort((a,b)=>a-b), m = u.length;
+    let C = new Int32Array(m+1), S = new Float64Array(m+1), cost = new Float64Array(n+1), dp = new Float64Array(n+1);
+    
+    let getIdx = (v) => {
+        let l = 0, r = m - 1;
+        while (l <= r) {
+            let mid = (l + r) >> 1;
+            if (u[mid] === v) return mid + 1;
+            u[mid] < v ? (l = mid + 1) : (r = mid - 1);
+        }
+    };
+    
+    let add = (v, d) => { for(let i = getIdx(v); i <= m; i += i & -i) C[i] += d, S[i] += d * v; };
+    let qry = (i, c=0, s=0) => { for(; i > 0; i -= i & -i) c += C[i], s += S[i]; return [c, s]; };
+
+    for (let i = 0; i < n; i++) {
+        add(A[i], 1); 
+        if (i >= x) add(A[i-x], -1);
+        if (i >= x - 1) {
+            let idx = 0, rem = (x + 1) >> 1;
+            for (let step = 1 << 17; step > 0; step >>= 1) {
+                if (idx + step <= m && C[idx + step] < rem) rem -= C[idx += step];
+            }
+            let [lc, ls] = qry(++idx), [tc, ts] = qry(m), med = u[idx - 1];
+            cost[i+1] = (lc * med - ls) + ((ts - ls) - (tc - lc) * med);
+        }
+    }
+
+    for (let j = 1; j <= k; j++) {
+        let nxt = new Float64Array(n+1).fill(1/0), minP = 1/0;
+        for (let i = j * x; i <= n; i++) {
+            minP = Math.min(minP, dp[i-x]);
+            nxt[i] = Math.min(nxt[i-1], minP + cost[i]);
+        }
+        dp = nxt;
+    }
+    return dp[n];
+};
