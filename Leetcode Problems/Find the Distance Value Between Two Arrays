@@ -1,1 +1,3 @@
 
+const findTheDistanceValue = (arr1, arr2, d) => 
+  arr1.filter(a => arr2.every(b => Math.abs(a - b) > d)).length;
