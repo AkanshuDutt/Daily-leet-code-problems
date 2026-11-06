@@ -1,4 +1,3 @@
-
 var countServers = function(n, logs, x, queries) {
     logs.sort((a, b) => a[1] - b[1]); 
     logs.push([0, Infinity]);  
