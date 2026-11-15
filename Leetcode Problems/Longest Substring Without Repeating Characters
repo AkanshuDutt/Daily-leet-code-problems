@@ -1,0 +1,32 @@
+/**
+ * LeetCode 3. Longest Substring Without Repeating Characters
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ *
+ * Approach: Sliding window. Expand the right edge and remember the last index
+ * of each character. When a repeat falls inside the current window, jump the
+ * left edge to just past that character's previous index and track the longest
+ * window seen.
+ *
+ * Time: O(n) — each index is visited a constant number of times
+ * Space: O(min(n, σ)) — last-seen index per distinct character (σ = alphabet size)
+ *
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function(s) {
+    const last = new Map();
+    let best = 0;
+    let left = 0;
+
+    for (let right = 0; right < s.length; right++) {
+        const ch = s[right];
+        const prev = last.get(ch);
+        if (prev !== undefined && prev >= left) {
+            left = prev + 1;
+        }
+        last.set(ch, right);
+        best = Math.max(best, right - left + 1);
+    }
+
+    return best;
+};
