@@ -1,1 +1,5 @@
 
+var digitSum = (s, k) => {
+    while (s.length > k) s = s.match(new RegExp(`.{1,${k}}`, 'g')).map(x => [...x].reduce((a, b) => a + +b, 0)).join('');
+    return s;
+};
