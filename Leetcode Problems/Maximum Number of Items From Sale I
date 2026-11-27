@@ -1,9 +1,3 @@
-
-/**
- * @param {number[][]} items
- * @param {number} budget
- * @return {number}
- */
 var maximumSaleItems = function(items, budget) {
     const mult = new Array(1501).fill(0);
     for (const it of items) {
