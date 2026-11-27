@@ -1,0 +1,66 @@
+/**
+ * LeetCode 3934. Smallest Unique Subarray
+ * https://leetcode.com/problems/smallest-unique-subarray/
+ *
+ * Difficulty: Hard
+ *
+ * Approach: If some length-L subarray is unique (occurs exactly once), a
+ * length-(L+1) one is too, and the whole array is always unique, so binary
+ * search the smallest L. Check(L): double-modulus rolling hash over every
+ * length-L window, count keys in a Map, pass if any key has count 1.
+ *
+ * Time: O(n log n) — binary search over the window length; each check scans
+ * the array once
+ * Space: O(n) — the hash-count Map
+ *
+ * Accepted on LeetCode: 719/719 testcases, 1272 ms, 155.52 MB.
+ * Submission: https://leetcode.com/problems/smallest-unique-subarray/submissions/2202954644/
+ * Daily challenge 2026-11-25.
+ *
+ * @param {number[]} nums
+ * @return {number}
+ */
+var smallestUniqueSubarray = function(nums) {
+    const n = nums.length;
+    const M1 = 1000000007;
+    const M2 = 1000003;
+    const B1 = 100003;
+    const B2 = 131;
+
+    const ok = (L) => {
+        let p1 = 1;
+        let p2 = 1;
+        for (let i = 1; i < L; i++) {
+            p1 = p1 * B1 % M1;
+            p2 = p2 * B2 % M2;
+        }
+        const cnt = new Map();
+        let h1 = 0;
+        let h2 = 0;
+        for (let i = 0; i < n; i++) {
+            if (i >= L) {
+                h1 = (h1 - nums[i - L] * p1 % M1 + M1) % M1;
+                h2 = (h2 - nums[i - L] * p2 % M2 + M2) % M2;
+            }
+            h1 = (h1 * B1 + nums[i]) % M1;
+            h2 = (h2 * B2 + nums[i]) % M2;
+            if (i >= L - 1) {
+                const k = h1 * M2 + h2;
+                cnt.set(k, (cnt.get(k) || 0) + 1);
+            }
+        }
+        for (const v of cnt.values()) {
+            if (v === 1) return true;
+        }
+        return false;
+    };
+
+    let lo = 1;
+    let hi = n;
+    while (lo < hi) {
+        const m = (lo + hi) >> 1;
+        if (ok(m)) hi = m;
+        else lo = m + 1;
+    }
+    return lo;
+};
