@@ -1,0 +1,19 @@
+/**
+ * LeetCode 2124. Check if All A's Appears Before All B's
+ * https://leetcode.com/problems/check-if-all-as-appears-before-all-bs/
+ *
+ * Approach: The string is valid iff no 'b' is immediately followed by 'a',
+ * i.e. the substring "ba" never appears.
+ *
+ * Time: O(n) — a single scan of the string
+ * Space: O(1) — no auxiliary storage
+ *
+ * Accepted on LeetCode: 118/118 testcases, 0 ms (beats 100%), 55.96 MB.
+ * Daily challenge 2026-11-22.
+ *
+ * @param {string} s
+ * @return {boolean}
+ */
+var checkString = function(s) {
+    return !s.includes("ba");
+};
