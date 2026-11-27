@@ -1,0 +1,29 @@
+/**
+ * LeetCode 3360. Stone Removal Game
+ * https://leetcode.com/problems/stone-removal-game/
+ *
+ * Difficulty: Easy
+ *
+ * Approach: Simulate the game: the current player removes k stones (k starts
+ * at 10 and decreases by 1 each turn) while n >= k. The player who cannot
+ * move loses, so Alice wins iff it is Bob's turn when the loop stops.
+ *
+ * Time: O(1) — at most 10 moves
+ * Space: O(1) — a constant number of scalars
+ *
+ * Accepted on LeetCode: 53/53 testcases, 0 ms (beats 100.00%), 55.09 MB (beats 39.13%).
+ * Submission: https://leetcode.com/problems/stone-removal-game/submissions/2203605425/
+ * Daily challenge 2026-11-26.
+ *
+ * @param {number} n
+ * @return {boolean}
+ */
+var canAliceWin = function(n) {
+    let k = 10, alice = true;
+    while (n >= k) {
+        n -= k;
+        k--;
+        alice = !alice;
+    }
+    return !alice;
+};
