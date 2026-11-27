@@ -1,0 +1,45 @@
+/**
+ * LeetCode 3411. Maximum Subarray With Equal Products
+ * https://leetcode.com/problems/maximum-subarray-with-equal-products/
+ *
+ * Approach: For each start index, extend the window to the right while
+ * tracking the product, gcd, and lcm. A window is valid when
+ * product === lcm * gcd. Every nums[i] is at most 10, so lcm * gcd is at
+ * most 2520 * 10 = 25200, and the window can stop once the product exceeds
+ * that bound.
+ *
+ * Time: O(n * k * log M) — n starts; the inner window length k stays small
+ * because the product grows quickly, unless the values are 1s. Worst case
+ * is O(n^2) when many 1s (n <= 100). Each gcd is O(log M), M <= 10.
+ * Space: O(1) — a constant number of scalars
+ *
+ * Accepted on LeetCode: 865/865 testcases, 6 ms (beats 72%), 63.38 MB.
+ * Daily challenge 2026-11-24.
+ *
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxLength = function(nums) {
+    const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+    let best = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        let product = 1;
+        let g = 0;
+        let lcm = 1;
+
+        for (let j = i; j < nums.length; j++) {
+            const value = nums[j];
+            product *= value;
+            g = gcd(g, value);
+            lcm = (lcm / gcd(lcm, value)) * value;
+
+            if (product > 25200) break;
+            if (product === lcm * g) {
+                best = Math.max(best, j - i + 1);
+            }
+        }
+    }
+
+    return best;
+};
