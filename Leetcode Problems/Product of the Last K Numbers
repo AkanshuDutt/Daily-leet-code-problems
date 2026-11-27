@@ -1,0 +1,44 @@
+/**
+ * LeetCode 1352. Product of the Last K Numbers
+ * https://leetcode.com/problems/product-of-the-last-k-numbers/
+ *
+ * Approach: Keep a prefix-product array, reset to [1] whenever 0 is added.
+ * getProduct(k) returns 0 if k >= length (a zero is within the last k),
+ * otherwise p[n - 1] / p[n - 1 - k].
+ *
+ * Time: O(1) per add and getProduct
+ * Space: O(n) — the prefix-product array
+ *
+ * Accepted on LeetCode: 35/35 testcases, 123 ms, 97.70 MB.
+ * Daily challenge 2026-11-23.
+ */
+
+/**
+ * @constructor
+ */
+var ProductOfNumbers = function() {
+    this.p = [1];
+};
+
+/**
+ * @param {number} num
+ * @return {void}
+ */
+ProductOfNumbers.prototype.add = function(num) {
+    if (num === 0) {
+        this.p = [1];
+    } else {
+        this.p.push(this.p[this.p.length - 1] * num);
+    }
+};
+
+/**
+ * @param {number} k
+ * @return {number}
+ */
+ProductOfNumbers.prototype.getProduct = function(k) {
+    const p = this.p;
+    const n = p.length;
+    if (k >= n) return 0;
+    return p[n - 1] / p[n - 1 - k];
+};
