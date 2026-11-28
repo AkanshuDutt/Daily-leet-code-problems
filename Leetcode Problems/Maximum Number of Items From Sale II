@@ -6,7 +6,7 @@ var maximumSaleItems = function(items, budget) {
         have[factor]++;
         cheapest = Math.min(cheapest, price);
     }
-    const deals = Array(n + 1).fill(-1);  // counted when an item is reached
+    const deals = Array(n + 1).fill(-1); 
 
     const worth = items.filter(([, price]) => price < 2 * cheapest);
     const heap = MinPriorityQueue.fromArray(worth, ([, price]) => price);  // built in O(n)
